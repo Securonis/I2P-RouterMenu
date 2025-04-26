@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Renk kodları
+
 green="\e[32m"
 red="\e[31m"
 reset="\e[0m"
 
-# ASCII Art Logo
 echo -e "${green}"
 cat << "EOF"
 
