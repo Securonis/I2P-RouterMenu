@@ -210,18 +210,12 @@ class I2PRouterMenu(QMainWindow):
             self.show_output("I2P Router Status", "You are not connected to the I2P network")
     
     def install_i2p(self):
-        output, error, code = self.run_command("i2prouter install")
-        if code == 0:
-            self.show_output("I2P Installed", "I2P has been successfully installed and auto-start has been enabled.")
-        else:
-            self.show_output("Error", "Failed to install I2P.", error)
+        self.open_terminal_for_command("i2prouter install")
+        self.show_output("I2P Installation Started", "A terminal window has been opened to handle I2P installation.\n\nPlease follow the instructions in the terminal window.")
     
     def remove_i2p(self):
-        output, error, code = self.run_command("i2prouter remove")
-        if code == 0:
-            self.show_output("I2P Removed", "I2P has been successfully removed and auto-start has been disabled.")
-        else:
-            self.show_output("Error", "Failed to remove I2P.", error)
+        self.open_terminal_for_command("i2prouter remove")
+        self.show_output("I2P Removal Started", "A terminal window has been opened to handle I2P removal.\n\nPlease follow the instructions in the terminal window.")
     
     def view_thread_dump(self):
         output, error, code = self.run_command("i2prouter dump")
@@ -230,6 +224,39 @@ class I2PRouterMenu(QMainWindow):
         else:
             self.show_output("Error", "Failed to view thread dump.", error)
     
+    def open_terminal_for_command(self, command):
+        """Open a separate terminal window and run the specified command."""
+        try:
+            # Try to find available terminal emulators
+            terminals = ['x-terminal-emulator', 'gnome-terminal', 'konsole', 'xfce4-terminal', 'mate-terminal', 'xterm']
+            
+            for terminal in terminals:
+                try:
+                    # Check if the terminal exists
+                    which_result = subprocess.run(['which', terminal], capture_output=True, text=True)
+                    
+                    if which_result.returncode == 0:
+                        # Terminal found, use it
+                        if terminal == 'gnome-terminal':
+                            subprocess.Popen([terminal, '--', 'bash', '-c', f'{command}; exec bash'])
+                        elif terminal == 'konsole' or terminal == 'mate-terminal':
+                            subprocess.Popen([terminal, '-e', f'bash -c "{command}; exec bash"'])
+                        elif terminal == 'xfce4-terminal':
+                            subprocess.Popen([terminal, '--command', f'bash -c "{command}; exec bash"'])
+                        else:  # xterm and others
+                            subprocess.Popen([terminal, '-e', f'bash -c "{command}; exec bash"'])
+                        return True
+                except Exception:
+                    continue
+                    
+            # If we get here, no terminal was successfully opened
+            self.show_output("Warning", "Could not find a terminal emulator. Please run the command manually in a terminal.")
+            return False
+            
+        except Exception as e:
+            self.show_output("Error", f"Failed to open terminal: {str(e)}")
+            return False
+            
     def show_about(self):
         about_text = """
         <h2>I2P - Invisible Internet Project</h2>
