@@ -17,7 +17,7 @@ class I2PRouterMenu(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("I2P Router Menu")
-        self.setMinimumSize(500, 300)
+        self.setMinimumSize(350, 200)
         
         # Main widget and layout
         self.central_widget = QWidget()
@@ -26,7 +26,7 @@ class I2PRouterMenu(QMainWindow):
         
         # Logo
         self.logo_label = QLabel()
-        self.logo_pixmap = QPixmap("/usr/share/icons/securonis/i2p.png")
+        self.logo_pixmap = QPixmap("/usr/share/icons/securonis/newi2p.png")
         if not self.logo_pixmap.isNull():
             self.logo_pixmap = self.logo_pixmap.scaled(400, 100, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.logo_label.setPixmap(self.logo_pixmap)
@@ -88,10 +88,10 @@ class I2PRouterMenu(QMainWindow):
                 color: #FFD700;
                 border: 1px solid #FFD700;
                 border-radius: 5px;
-                padding: 10px;
+                padding: 8px;
                 font-size: 14px;
                 text-align: left;
-                padding-left: 20px;
+                padding-left: 15px;
             }
             QPushButton:hover {
                 background-color: #3B3B3B;
