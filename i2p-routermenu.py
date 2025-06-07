@@ -210,11 +210,11 @@ class I2PRouterMenu(QMainWindow):
             self.show_output("I2P Router Status", "You are not connected to the I2P network")
     
     def install_i2p(self):
-        self.open_terminal_for_command("i2prouter install")
+        self.open_terminal_for_command("dpkg-reconfigure i2p")
         self.show_output("I2P Installation Started", "A terminal window has been opened to handle I2P installation.\n\nPlease follow the instructions in the terminal window.")
     
     def remove_i2p(self):
-        self.open_terminal_for_command("i2prouter remove")
+        self.open_terminal_for_command("dpkg-reconfigure i2p")
         self.show_output("I2P Removal Started", "A terminal window has been opened to handle I2P removal.\n\nPlease follow the instructions in the terminal window.")
     
     def view_thread_dump(self):
